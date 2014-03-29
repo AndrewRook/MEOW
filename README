@@ -1,0 +1,39 @@
+MEOW (Measuring Enamel Occlusal Wear) is a program designed to semi-automate the estimation of wear patterns on fossil teeth. Under the hood it uses the watershed segmentation algorithm from the powerful OpenCV library, and presents an accessible interface so the user can help guide the algorithm by selecting image regions belonging to background, enamel, and dentin. All control is done graphically via mouse or keyboard commands, allowing for efficient analysis of large sets of images.
+
+Pre-requisites:
+Python 2.7 (may also work on other versions)
+Numpy
+OpenCV, with python bindings. 
+
+Instructions:
+Once the pre-requisites have been installed and the MEOW.py script downloaded, the command syntax is as follows:
+python MEOW.py [file with list of image names] [output filename]
+
+The first argument should be a filename that has a single-column list of image names, like so:
+img_0001.jpg
+img_0002.jpg
+etc.
+
+The second argument gives the filename that the output measurements will go into. THIS WILL SILENTLY OVERWRITE ANY EXISTING FILE BY THAT NAME.
+
+Once the program is running, it will iterate through the image list one by one. First it will show the original image, and prompt you to choose a region of interest (ROI). Select this region by left-clicking and dragging on the image. Once you release the mouse a new image window will pop up showing a zoomed in view of the ROI. You can reselect the ROI at any time via this procedure, but be aware that it will erase any progress you've made on that image.
+
+From this point you'll be operating on the ROI image window. There are several available options here:
+ESC -- Move onto the next image without saving anything.
+q -- Save and move on. Only works after a segmentation image has been made.
+s -- Switch to segmentation mode.
+t -- Switch to tooth identification mode.
+[space] -- Make the segmentation.
+
+There are two major modes, segmentation mode and tooth identification mode, with different options for each:
+Tooth ID mode:
+left-click and drag -- draw a rectangle around a tooth. This rectangle doesn't have to be perfect as long as it doesn't overlap any other teeth (the program ignores background regions when computing areas, so don't worry about that!).
+d -- Delete the nearest tooth identification.
+z -- Delete all tooth identification.
+
+Segmentation mode:
+left-click and drag -- draw markers to help guide the segmentation process.
+1-4 -- change the marker type. 1 = background (green), 2 = enamel (red), 3 = dentin (yellow), 4 = not sure (orange).
+z -- Delete all markers.
+
+The basic workflow is to identify the teeth you want to measure, then make a few marks to identify the general background, enamel, and dentin regions. Next, run the watershed segmentation with [space], which pops up a new window showing the ROI overlaid with the algorithm's current guess at the segmentation. From there, go back to the ROI and add markers where necessary to improve the segmentation. When you're happy with it, press 'q'. This will save a diagnostic image (with the filename of the original image + the extension "_segmented" added) and print out the areas of each marker to the text file specified on the command line. Note that these areas are in units of pixels of the ORIGINAL (not the ROI) image. The tooth id in this file is the same as the number printed above all the teeth in the diagnostic image.
