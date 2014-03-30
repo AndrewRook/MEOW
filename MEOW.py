@@ -162,7 +162,7 @@ class roi_image:
                 enamel_coverage = self.extract_colored_pixels(segment_coverage,enamel_color)
                 dentin_coverage = self.extract_colored_pixels(segment_coverage,dentin_color)
                 unsure_coverage = self.extract_colored_pixels(segment_coverage,unsure_color)
-                output_file.write("{0:s} {1:d} {2:.2f} {3:.2f} {4:.2f}\n".format(input_image_filename,i+1,np.sum(enamel_coverage)/float(resize_factor),np.sum(dentin_coverage)/float(resize_factor),np.sum(unsure_coverage)/float(resize_factor)))
+                output_file.write("{0:s},{1:d},{2:.2f},{3:.2f},{4:.2f}\n".format(input_image_filename,i+1,np.sum(enamel_coverage)/float(resize_factor),np.sum(dentin_coverage)/float(resize_factor),np.sum(unsure_coverage)/float(resize_factor)))
                 
 
     def extract_colored_pixels(self,image,color):
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     colors_nparr = np.int32(colors)
     
     output_file = open(output_filename,'w')
-    output_file.write("#Image_Name Tooth_ID Enamel_Pix Dentin_Pix Unsure_Pix\n")
+    output_file.write("#Image_Name,Tooth_ID,Enamel_Pix,Dentin_Pix,Unsure_Pix\n")
     output_file.close()
 
     for i in range(len(file_list)):
