@@ -35,7 +35,7 @@ def tooth_mark(event,x,y,flags,param):
     roi_img = param['roi_img']
     if event == cv2.EVENT_LBUTTONDOWN:
         roi_img.curr_drawing = True
-        roi_img.tooth_list.append(tooth_area(x1=x,y1=y))
+        roi_img.tooth_list.append(tooth_area(x1=x,y1=y,label=None))
         roi_img.temporary_image = roi_img.marked_image.copy()
     elif event == cv2.EVENT_MOUSEMOVE:
         roi_img.curr_x = x
@@ -146,11 +146,14 @@ class roi_image:
         if len(self.tooth_list) > 0:
             self.sort_teeth()
             for i in range(len(self.tooth_list)):
-                text = "{0:d}".format(i+1)
-                fontsize = 1
-                textsize = cv2.getTextSize(text,cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,fontsize,3)
+                text = self.tooth_list[i].label
+                if text == '':
+                    text = "{0:d}".format(i+1)
+                fontsize = 3
+                fontname = cv2.FONT_HERSHEY_PLAIN
+                textsize = cv2.getTextSize(text,fontname,fontsize,3)
                 textpos_bot_left = (int((self.tooth_list[i].x1+self.tooth_list[i].x2)/2.-textsize[0][0]/2.),int(self.tooth_list[i].y1-10))
-                cv2.putText(self.watershed_image, text, textpos_bot_left,cv2.FONT_HERSHEY_SCRIPT_SIMPLEX,fontsize,[255,255,0],3)
+                cv2.putText(self.watershed_image, text, textpos_bot_left,fontname,fontsize,[255,255,0],3)
                 cv2.rectangle(self.watershed_image,(self.tooth_list[i].x1,self.tooth_list[i].y1),(self.tooth_list[i].x2,self.tooth_list[i].y2),[255,255,0],2)
         
     def write_data(self,output_file,enamel_color,dentin_color,unsure_color,resize_factor,input_image_filename):
@@ -162,7 +165,10 @@ class roi_image:
                 enamel_coverage = self.extract_colored_pixels(segment_coverage,enamel_color)
                 dentin_coverage = self.extract_colored_pixels(segment_coverage,dentin_color)
                 unsure_coverage = self.extract_colored_pixels(segment_coverage,unsure_color)
-                output_file.write("{0:s},{1:d},{2:.2f},{3:.2f},{4:.2f}\n".format(input_image_filename,i+1,np.sum(enamel_coverage)/float(resize_factor),np.sum(dentin_coverage)/float(resize_factor),np.sum(unsure_coverage)/float(resize_factor)))
+                tooth_name = self.tooth_list[i].label
+                if tooth_name == '':
+                    tooth_name = '{0:d}'.format(i+1)
+                output_file.write("{0:s},{1:s},{2:.2f},{3:.2f},{4:.2f}\n".format(input_image_filename,tooth_name,np.sum(enamel_coverage)/float(resize_factor),np.sum(dentin_coverage)/float(resize_factor),np.sum(unsure_coverage)/float(resize_factor)))
                 
 
     def extract_colored_pixels(self,image,color):
@@ -172,6 +178,15 @@ class roi_image:
         return output_image
                 
     def remove_nearest_tooth(self):
+        if len(self.tooth_list) > 0:
+            curr_closest_tooth_index,curr_closest_tooth_dist = self.compute_nearest_tooth()
+            #Now, delete it:
+            self.tooth_list.pop(curr_closest_tooth_index)
+            
+            #Redraw image:
+            self.redraw_teeth()
+
+    def compute_nearest_tooth(self):
         if len(self.tooth_list) > 0:
             #Compute nearest tooth:
             #We'll just brute-force this, since the number of teeth is likely to be <=10:
@@ -184,19 +199,39 @@ class roi_image:
                 if tooth_dist < curr_closest_tooth_dist:
                     curr_closest_tooth_index = i
                     curr_closest_tooth_dist = tooth_dist
-
-            #Now, delete it:
-            self.tooth_list.pop(curr_closest_tooth_index)
+            return curr_closest_tooth_index,curr_closest_tooth_dist
+        raise Exception('No teeth in list!')
             
-            #Redraw image:
-            self.redraw_teeth()
+    def label_nearest_tooth(self):
+        if len(self.tooth_list) > 0:
+            curr_closest_tooth_index,curr_closest_tooth_dist = self.compute_nearest_tooth()
+            label = ''
+            print "Type the label for the tooth, then press enter:"
+            while True:
+                key = 0xFF & cv2.waitKey(0)
+                if key == 27: #ESC
+                    break
+                elif key == 127: #Backspace
+                    label = label[:-1]
+                elif key == 44: #Comma
+                    pass
+                elif (key >= ord('a') and key <= ord('z')) or (key >= ord('A') and key <= ord('Z')) or (key >= ord('0') and key <= ord('9')) or key == 63: #?A-Za-z0-9
+                    label += chr(key)
+                elif key == 13: #Enter
+                    self.tooth_list[curr_closest_tooth_index].label = label
+                    print "Accepted!"
+                    break
+                print label
+                # if label != '':
+                #     print label
                 
 class tooth_area:
-    def __init__(self,x1=0,x2=0,y1=0,y2=0):
+    def __init__(self,x1=0,x2=0,y1=0,y2=0,label=None):
         self.x1 = x1
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
+        self.label = label
     def sort_corners(self):
         if self.x1 > self.x2:
             temp = self.x1
@@ -290,6 +325,10 @@ if __name__ == "__main__":
                 if roi_img.marking_mode == 'teeth':
                     if len(roi_img.tooth_list) > 0:
                         roi_img.remove_nearest_tooth()
+            if key in [ord('l'),ord('L')]:
+                if roi_img.marking_mode == 'teeth':
+                    if len(roi_img.tooth_list) > 0:
+                        roi_img.label_nearest_tooth()
             if key in [ord('z'),ord('Z')]:
                 #Reset colors drawn on ROI:
                 if roi_img.marking_mode == 'segmentation':

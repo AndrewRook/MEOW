@@ -29,7 +29,8 @@ There are two major modes, segmentation mode and tooth identification mode, with
 Tooth ID mode:
 left-click and drag -- draw a rectangle around a tooth. This rectangle doesn't have to be perfect as long as it doesn't overlap any other teeth (the program ignores background regions when computing areas, so don't worry about that!).
 d -- Delete the nearest tooth identification.
-z -- Delete all tooth identification.
+l -- Label the nearest tooth. After clicking l, just type out a label (e.g. m2,p1,m?) and then hit enter. The label will display in the terminal as you enter it. Accepted characters are a-z,A-Z,0-9, and ?. Delete works as well. The label will be writting on both the diagnostic plot and in the output file. If no label is specified, the relative position of the tooth will be used as the label instead (e.g. 1 for the leftmost tooth, 2 for the next tooth over, etc). 
+z -- Delete all tooth identifications.
 
 Segmentation mode:
 left-click and drag -- draw markers to help guide the segmentation process.
