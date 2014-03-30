@@ -224,6 +224,7 @@ if __name__ == "__main__":
     
     output_file = open(output_filename,'w')
     output_file.write("#Image_Name Tooth_ID Enamel_Pix Dentin_Pix Unsure_Pix\n")
+    output_file.close()
 
     for i in range(len(file_list)):
         filename = file_list[i]
@@ -252,7 +253,9 @@ if __name__ == "__main__":
             if key in [ord('q'),ord('Q')]:
                 if roi_img.watershed_bool == True:
                     roi_img.draw_teeth_output()
+                    output_file = open(output_filename,'a')
                     roi_img.write_data(output_file,colors[2],colors[3],colors[4],orig_img.resize_roi_factor,filename)
+                    output_file.close()
                     outputname = os.path.splitext(filename)[0]+"_segmented"+os.path.splitext(filename)[1]
                     cv2.imwrite(outputname,roi_img.watershed_image)
                     break
@@ -300,4 +303,3 @@ if __name__ == "__main__":
 
         cv2.destroyAllWindows()
     
-    output_file.close()
