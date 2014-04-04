@@ -253,7 +253,7 @@ if __name__ == "__main__":
     file_list = np.loadtxt(sys.argv[1],dtype=np.str,ndmin=1)
     output_filename = sys.argv[2]
     
-    colors = [[255,255,255],[0,255,0],[0,0,255],[0,215,255],[0,127,255]]
+    colors = [[255,255,255],[0,255,0],[0,0,255],[0,215,255],[255,51,255]]
     color_types = ['none','background','enamel','dentin','unsure']
     colors_nparr = np.int32(colors)
     

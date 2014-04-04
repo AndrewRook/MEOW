@@ -34,7 +34,7 @@ z -- Delete all tooth identifications.
 
 Segmentation mode:
 left-click and drag -- draw markers to help guide the segmentation process.
-1-4 -- change the marker type. 1 = background (green), 2 = enamel (red), 3 = dentin (yellow), 4 = not sure (orange).
+1-4 -- change the marker type. 1 = background (green), 2 = enamel (red), 3 = dentin (yellow), 4 = not sure (pink).
 z -- Delete all markers.
 
 The basic workflow is to identify the teeth you want to measure, then make a few marks to identify the general background, enamel, and dentin regions. Next, run the watershed segmentation with [space], which pops up a new window showing the ROI overlaid with the algorithm's current guess at the segmentation. From there, go back to the ROI and add markers where necessary to improve the segmentation. When you're happy with it, press 'q'. This will save a diagnostic image (with the filename of the original image + the extension "_segmented" added) and print out the areas of each marker to the text file specified on the command line. Note that these areas are in units of pixels of the ORIGINAL (not the ROI) image. The tooth id in this file is the same as the number printed above all the teeth in the diagnostic image.
