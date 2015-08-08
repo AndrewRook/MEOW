@@ -1,9 +1,16 @@
+#MEOW
+
 MEOW (Measuring Enamel Occlusal Wear) is a program designed to semi-automate the estimation of wear patterns on fossil teeth. Under the hood it uses the watershed segmentation algorithm from the powerful OpenCV library, and presents an accessible interface so the user can help guide the algorithm by selecting image regions belonging to background, enamel, and dentin. All control is done graphically via mouse or keyboard commands, allowing for efficient analysis of large sets of images.
 
-Pre-requisites:
-Python 2.7 (may also work on other versions)
-Numpy
-OpenCV, with python bindings. 
+###Pre-requisites:
+* Python 2.7 (may also work on other versions)
+* Numpy
+* OpenCV, with python bindings.
+
+##Windows installation instructions:
+1. [Download Python 2.7.9](https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi), then double-click the installer and follow prompts to install.
+2. [Download Numpy 1.9.2](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/numpy-1.9.2-win32-superpack-python2.7.exe/download), then double click the installer and follow the prompts.
+3. [Download OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.0.0/opencv-3.0.0.exe/download), then double click the installer and follow the prompts.
 
 Instructions:
 Once the pre-requisites have been installed and the MEOW.py script downloaded, the command syntax is as follows:
