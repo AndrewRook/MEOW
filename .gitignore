@@ -1,2 +1,7 @@
 *.txt
 *.JPG
+*.doc
+*.pages/
+deb_teeth/
+
+.DS_Store
