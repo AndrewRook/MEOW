@@ -1,0 +1,7 @@
+#Image_Name,Tooth_ID,Enamel_Pix,Dentin_Pix,Unsure_Pix
+12753_occlusal.JPG,m3,2077.60,19.60,0.00
+12753_occlusal.JPG,m2,2028.40,152.40,0.00
+12753_occlusal.JPG,m1,1886.80,0.00,0.00
+12806_occlusal.JPG,m3,11066.40,0.00,562.00
+12806_occlusal.JPG,m2,8578.00,816.80,139.20
+12806_occlusal.JPG,m1,7100.00,1330.40,0.00
