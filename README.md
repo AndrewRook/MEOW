@@ -8,9 +8,19 @@ MEOW (Measuring Enamel Occlusal Wear) is a program designed to semi-automate the
 * OpenCV, with python bindings.
 
 ##Windows installation instructions:
-1. [Download Python 2.7.9](https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi), then double-click the installer and follow prompts to install.
-2. [Download Numpy 1.9.2](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/numpy-1.9.2-win32-superpack-python2.7.exe/download), then double click the installer and follow the prompts.
-3. [Download OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.0.0/opencv-3.0.0.exe/download), then double click the installer and follow the prompts.
+1. [Download Python 2.7.9](https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi), then double-click the installer and follow prompts to install. **Note**: the rest of these instructions assume that you install Python into the default directory; if you choose to install to a non-default directory, you'll need to modify some of the filepaths.
+2. Set your computer's Path variable:
+   1. Open the "Control Panel" (you can search for it).
+   2. Click on "System".
+   3. Select "Advanced System Settings".
+   4. Select "Environment Variables".
+   5. In the User Variables section, Either create a Path variable with the following or append it to an existing Path variable: `C:\Python27;C:\Python27\Lib\site-packages\;C:\Python27\Scripts\;`
+3. Confirm the successful installation by opening the command prompt (search for "cmd"), then entering `python`. The Python interpreter should load, giving you a `>>>` prompt rather than the usual `C:\>`. 
+4. [Download Numpy 1.9.2](http://sourceforge.net/projects/numpy/files/NumPy/1.9.2/numpy-1.9.2-win32-superpack-python2.7.exe/download), then double click the installer and follow the prompts.
+5. Confirm successful installation by starting a new instance of the command prompt, entering `python`, then entering `import numpy as np; np.__version__`. You should see `1.9.2` printed to the screen.
+6. [Download OpenCV](http://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.0.0/opencv-3.0.0.exe/download), then double click to extract the package.
+7. Go to `opencv\build\python\2.7\x86\`, and copy the `cv2.pyd` file to `C:\Python27\Lib\site-packages\`.
+8. Confirm successful installation by starting a new instance of the command prompt, entering `python`, then entering `import cv2; cv2.__version__`. You should see `3.0.0` printed to the screen.
 
 Instructions:
 Once the pre-requisites have been installed and the MEOW.py script downloaded, the command syntax is as follows:
